@@ -73,25 +73,3 @@ project(':Practice-Batch') {
         implementation project(':Practice-Common') // 컴파일 시 Practice-Common project 로딩 (의존성 주입)
     }
 }
-
-//plugins {
-//    id 'java'
-//    id 'org.springframework.boot' version '2.7.10'
-//    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-//}
-//
-//group 'org.example'
-//version '1.0-SNAPSHOT'
-//
-//repositories {
-//    mavenCentral()
-//}
-//
-//dependencies {
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-//}
-//
-//test {
-//    useJUnitPlatform()
-//}
