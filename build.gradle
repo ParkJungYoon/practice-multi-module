@@ -1,75 +1,47 @@
-buildscript {
-    ext {
-        springBootVersion = '2.7.10'
-    }
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
-        classpath "io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE"
-    }
+plugins {
+    id 'org.springframework.boot' version '2.7.10'
+    id 'java'
 }
 
-// 하위 모든 프로젝트 공통 세팅
+
+repositories {
+    mavenCentral()
+}
+
+bootJar.enabled = false
+
 subprojects {
+    group = 'practice.multimodule'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '11'
+
     apply plugin: 'java'
-    apply plugin: 'idea'
+    // build.gradle에서 api() 를 사용하려면 java-library 사용
+    apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
+    // spring boot dependency를 사용하여 사용중인 부트 버전에서 자동으로 의존성을 가져온다.
     apply plugin: 'io.spring.dependency-management'
 
-    group 'org.example'
-    version '1.0-SNAPSHOT'
-
-    sourceCompatibility = '11'
-    targetCompatibility = '11'
-    compileJava.options.encoding = 'UTF-8'
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 
     repositories {
         mavenCentral()
     }
 
-    // 하위 모듈에서 공통으로 사용하는 세팅 추가
+    // 관리하는 모듈에 공통 dependencies
     dependencies {
         compileOnly 'org.projectlombok:lombok'
-
         annotationProcessor 'org.projectlombok:lombok'
-        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-
-        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testCompileOnly 'org.projectlombok:lombok:1.18.12' // 테스트 의존성 추가
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.12' // 테스트 의존성 추가
     }
 
     test {
         useJUnitPlatform()
-    }
-}
-
-project(':Practice-Common') {
-    // 공통 코드
-
-    bootJar { enabled = false } // core 은 bootJar 로 패키징 할 필요 없음
-    jar { enabled = true }
-
-    dependencies {
-    }
-}
-
-project(':Practice-Api') {
-    bootJar { enabled = true }
-    jar { enabled = false }
-
-    dependencies {
-        implementation project(':Practice-Common') // 컴파일 시 Practice-Common project 로딩 (의존성 주입)
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-    }
-}
-
-project(':Practice-Batch') {
-    bootJar { enabled = true }
-    jar { enabled = false }
-
-    dependencies {
-        implementation project(':Practice-Common') // 컴파일 시 Practice-Common project 로딩 (의존성 주입)
     }
 }
