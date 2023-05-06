@@ -2,4 +2,6 @@ rootProject.name = 'practice-multi-module'
 include 'Practice-Api'
 include 'Practice-Common'
 include 'Practice-Batch'
+include 'Practice-Domain'
+include 'Practice-Infrastructure'
 
