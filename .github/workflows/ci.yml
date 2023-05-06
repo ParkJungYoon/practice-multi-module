@@ -1,5 +1,7 @@
 name: ci
 on:
+  push:
+    - 'dev'
   pull_request:
     branch:
       - 'dev'
